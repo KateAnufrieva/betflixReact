@@ -19,6 +19,7 @@ export default [
 
     rules: {
       'prettier/prettier': 'error',
+      'react/prop-tyres': 0,
     },
   },
 ];
