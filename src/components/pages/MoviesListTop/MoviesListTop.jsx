@@ -1,5 +1,43 @@
-import React from 'react';
+import { ArrowBack } from '@mui/icons-material';
+import { Button, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { TOP_LISTS } from '../../../constants';
+import { useGetFilmsTopQuery } from '../../../services/kinopoiskApi';
+import MoviesList from '../../ui/MoviesList/MoviesList';
 
 export default function MoviesListTop() {
-  return <div>MoviesListTop</div>;
+  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const movieType = TOP_LISTS.find(el => el.url === location.pathname);
+  const navigate = useNavigate();
+
+  const { data, error, isLoading } = useGetFilmsTopQuery({
+    type: movieType.value,
+    page,
+  });
+
+  useEffect(() => {
+    setPage(1);
+  }, [location]);
+
+  if (error) return <p>Some error</p>;
+
+  if (isLoading) return <p>Loading...</p>;
+
+  return (
+    <>
+      <Stack flexDirection="row" sx={{ mt: 2, mb: 2 }}>
+        <Button startIcon={<ArrowBack />} onClick={() => navigate(-1)} />
+        <Typography variant="h4">{movieType.title}</Typography>
+      </Stack>
+      <MoviesList
+        movies={data.items}
+        totalPages={data.totalPages}
+        page={page}
+        setPage={setPage}
+      />
+    </>
+  );
 }
