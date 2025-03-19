@@ -4,6 +4,8 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import useMoviesQuery from '../../../hooks/useMoviesQuery';
+import ErrorMessage from '../../ui/ErrorMessage';
+import MoviesSkeleton from './MoviesSkeleton';
 
 export default function Movies() {
   const {
@@ -17,10 +19,9 @@ export default function Movies() {
   } = useMoviesQuery();
 
   //TODO add skeleton
-  if (isLoading) return <p>Loadind...</p>;
+  if (isLoading) return <MoviesSkeleton />;
 
-  //TODO add error component
-  if (hasError) return <p>Error message</p>;
+  if (hasError) return <ErrorMessage />;
 
   const serialazeDatazForCarousel = data =>
     data.map(row => (
