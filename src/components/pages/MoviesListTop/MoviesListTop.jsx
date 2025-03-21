@@ -26,7 +26,7 @@ export default function MoviesListTop() {
 
   if (error) return <ErrorMessage />;
 
-  if (!isLoading) return <MoviesListSkeleton />;
+  if (isLoading) return <MoviesListSkeleton />;
 
   return (
     <>
