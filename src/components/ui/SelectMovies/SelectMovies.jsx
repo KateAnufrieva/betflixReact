@@ -10,6 +10,7 @@ import {
   Stack,
 } from '@mui/material';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function SelectMovies({
   countriesList,
@@ -19,6 +20,8 @@ export default function SelectMovies({
   year,
   genreId,
 }) {
+const dispatch = useDispatch()
+
   const ordersList = [
     { title: 'По рейтингу', value: 'RATING' },
     { title: 'По оценкам', value: 'NUM_VOTE' },
@@ -37,7 +40,7 @@ export default function SelectMovies({
     >
       <FormControl fullWidth size="small">
         <InputLabel>Сортировка</InputLabel>
-        <Select label="Orders">
+        <Select label="Orders" value={order} onChange={() => dispatch(select)}>
           {ordersList.map(order => (
             <MenuItem key={order.value} value={order.value}>
               {order.title}
