@@ -17,7 +17,12 @@ export const currentQuerySlice = createSlice({
       ...state,
       ...action.payload,
     }),
+    resetQuery: () => ({
+      ...initialState,
+    }),
   },
 });
+
+export const { selectQuery, resetQuery } = currentQuerySlice.actions;
 
 export default currentQuerySlice.reducer;
