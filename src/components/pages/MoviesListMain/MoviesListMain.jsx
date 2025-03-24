@@ -11,8 +11,8 @@ import {
 } from '../../../services/kinopoiskApi';
 import ErrorMessage from '../../ui/ErrorMessage';
 import MoviesList from '../../ui/MoviesList/MoviesList';
-import MoviesListSkeleton from '../../ui/MoviesListSkeleton/MoviesListSkeleton';
 import SelectMovies from '../../ui/SelectMovies';
+import MoviesListMainSkeleton from './MoviesListMainSkeleton';
 
 export default function MoviesListMain() {
   const [page, setPage] = useState(1);
@@ -44,7 +44,7 @@ export default function MoviesListMain() {
     return <ErrorMessage />;
 
   if (responseFilms.isLoading || responseGenresAndCountries.isLoading)
-    return <MoviesListSkeleton />;
+    return <MoviesListMainSkeleton />;
 
   return (
     <>
