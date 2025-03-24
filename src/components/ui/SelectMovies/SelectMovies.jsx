@@ -1,4 +1,3 @@
-import { Title } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
@@ -12,6 +11,8 @@ import {
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+import { resetQuery, selectQuery } from '../../../features/currentQuerySlice';
+
 export default function SelectMovies({
   countriesList,
   genresList,
@@ -20,7 +21,7 @@ export default function SelectMovies({
   year,
   genreId,
 }) {
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const ordersList = [
     { title: 'По рейтингу', value: 'RATING' },
@@ -40,7 +41,11 @@ const dispatch = useDispatch()
     >
       <FormControl fullWidth size="small">
         <InputLabel>Сортировка</InputLabel>
-        <Select label="Orders" value={order} onChange={() => dispatch(select)}>
+        <Select
+          label="Orders"
+          value={order}
+          onChange={e => dispatch(selectQuery({ order: e.target.value }))}
+        >
           {ordersList.map(order => (
             <MenuItem key={order.value} value={order.value}>
               {order.title}
@@ -50,7 +55,11 @@ const dispatch = useDispatch()
       </FormControl>
       <FormControl fullWidth size="small">
         <InputLabel>Страна</InputLabel>
-        <Select label="Countries">
+        <Select
+          label="Countries"
+          value={countries}
+          onChange={e => dispatch(selectQuery({ countries: e.target.value }))}
+        >
           {countriesList.map(country => (
             <MenuItem key={country.id} value={country.id}>
               {country.country}
@@ -60,7 +69,11 @@ const dispatch = useDispatch()
       </FormControl>
       <FormControl fullWidth size="small">
         <InputLabel>Жанр</InputLabel>
-        <Select label="Genres">
+        <Select
+          label="Genres"
+          value={genreId}
+          onChange={e => dispatch(selectQuery({ genreId: e.target.value }))}
+        >
           {genresList.map(genre => (
             <MenuItem key={genre.id} value={genre.id}>
               {genre.genre}
@@ -70,7 +83,11 @@ const dispatch = useDispatch()
       </FormControl>
       <FormControl fullWidth size="small">
         <InputLabel>Год</InputLabel>
-        <Select label="Years">
+        <Select
+          label="Years"
+          value={year}
+          onChange={e => dispatch(selectQuery({ year: e.target.value }))}
+        >
           {yearsList.map(year => (
             <MenuItem key={year.value} value={year.value}>
               {year.title}
@@ -79,7 +96,11 @@ const dispatch = useDispatch()
         </Select>
       </FormControl>
       <Box>
-        <Button variant="outlined" startIcon={<CloseIcon />}>
+        <Button
+          onClick={() => dispatch(resetQuery())}
+          variant="outlined"
+          startIcon={<CloseIcon />}
+        >
           Сбросить
         </Button>
       </Box>
