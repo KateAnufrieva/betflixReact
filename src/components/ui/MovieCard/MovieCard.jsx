@@ -7,7 +7,9 @@ import styles from './MovieCard.module.css';
 export default function MovieCard({ movie }) {
   return (
     <Stack>
-      <RouterLink to={`/movie/${movie.kinopoiskId}`}>
+      <RouterLink
+        to={`/movie/${movie.kinopoiskId ? movie.kinopoiskId : movie.filmId}`}
+      >
         <img
           src={movie.posterUrlPreview}
           alt={movie.nameRu}
@@ -16,7 +18,7 @@ export default function MovieCard({ movie }) {
       </RouterLink>
       <Link
         component={RouterLink}
-        to={`/movie/${movie.kinopoiskId}`}
+        to={`/movie/${movie.kinopoiskId ? movie.kinopoiskId : movie.filmId}`}
         textAlign="center"
         sx={{ width: '200px' }}
       >
