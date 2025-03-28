@@ -18,6 +18,7 @@ import {
 } from '../../../services/kinopoiskApi';
 import ErrorMessage from '../../ui/ErrorMessage';
 import MovieCard from '../../ui/MovieCard/MovieCard';
+import VideoPlayer from '../../ui/VideoPlayer';
 
 export default function MovieDetail() {
   const { id } = useParams();
@@ -41,7 +42,7 @@ export default function MovieDetail() {
 
   return (
     <>
-      <Grid container spacing={2} sx={{ mt: { md: 2 } }}>
+      <Grid container spacing={2} item sx={{ mt: { md: 2 } }}>
         <Grid item md={4} sm={12}>
           <img
             src={responseFilm.data.posterUrl}
@@ -51,29 +52,29 @@ export default function MovieDetail() {
         </Grid>
         <Grid item md={6} sm={12}>
           <Grid container>
-            <Grid xs={2}>
+            <Grid item xs={2}>
               <Button
                 startIcon={<ArrowBack />}
                 size="large"
                 onClick={() => navigate(-1)}
               />
             </Grid>
-            <Grid xs={4} alignContent="center">
+            <Grid item xs={4} alignContent="center">
               <Typography variant="h5">{responseFilm.data.nameRu}</Typography>
             </Grid>
           </Grid>
           <Grid container>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography>Год</Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography gutterBottom>{responseFilm.data.year}</Typography>
             </Grid>
 
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography>Страна</Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               {responseFilm.data.countries.map(({ country }) => (
                 <Typography gutterBottom key={country}>
                   {country}
@@ -81,10 +82,10 @@ export default function MovieDetail() {
               ))}
             </Grid>
 
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography>Жанры</Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               {responseFilm.data.genres.map(({ genre }) => (
                 <Typography gutterBottom key={genre}>
                   {genre}
@@ -92,10 +93,10 @@ export default function MovieDetail() {
               ))}
             </Grid>
 
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography>Режиссёры</Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               {responseStaff.data
                 .filter(el => el.professionText === 'Режиссеры')
                 .map(({ nameRu }) => (
@@ -105,22 +106,22 @@ export default function MovieDetail() {
                 ))}
             </Grid>
 
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography>Время</Typography>
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography gutterBottom>
                 {responseFilm.data.filmLength} минут
               </Typography>
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Typography textAlign="center" gutterBottom>
                 Описание
               </Typography>
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Typography gutterBottom>
                 {responseFilm.data.description
                   ? responseFilm.data.description
@@ -171,24 +172,26 @@ export default function MovieDetail() {
 
         <Grid item xs={12}></Grid>
         <Typography variant="h5">Смотреть онлайн</Typography>
-        <video />
+        <VideoPlayer />
       </Grid>
 
-      <Stack alignItems="center">
-        <Typography gutterBottom variant="h5">
-          Сиквелы и приквелы
-        </Typography>
-        <Stack
-          direction="row"
-          flexWrap="wrap"
-          justifyContent="center"
-          sx={{ gap: 2 }}
-        >
-          {responseSequelsAndPrequels.data.map(el => (
-            <MovieCard key={el.filmId} movie={el} />
-          ))}
+      {responseSequelsAndPrequels.data && (
+        <Stack alignItems="center">
+          <Typography gutterBottom variant="h5">
+            Сиквелы и приквелы
+          </Typography>
+          <Stack
+            direction="row"
+            flexWrap="wrap"
+            justifyContent="center"
+            sx={{ gap: 2 }}
+          >
+            {responseSequelsAndPrequels.data.map(el => (
+              <MovieCard key={el.filmId} movie={el} reload />
+            ))}
+          </Stack>
         </Stack>
-      </Stack>
+      )}
     </>
   );
 }
