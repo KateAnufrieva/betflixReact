@@ -15,6 +15,7 @@ import {
   ListItemIcon,
   ListItemText,
   Slide,
+  Stack,
   Toolbar,
   Typography,
   useScrollTrigger,
@@ -23,6 +24,7 @@ import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { iconComponents, MOVIE_LISTS, TOP_LISTS } from '../../../constants';
+import Search from '../Search';
 
 const CustomIcon = ({ iconName }) => {
   const IconComponent = iconComponents[iconName];
@@ -80,14 +82,22 @@ export default function Navbar() {
                 </List>
               </Box>
             </Drawer>
-            <Typography
-              sx={{ color: 'white', textDecoration: 'none' }}
-              component={RouterLink}
-              variant="h4"
-              to="/"
+            <Stack
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+              width="100%"
             >
-              betflix
-            </Typography>
+              <Typography
+                sx={{ color: 'white', textDecoration: 'none' }}
+                component={RouterLink}
+                variant="h4"
+                to="/"
+              >
+                betflix
+              </Typography>
+              <Search />
+            </Stack>
           </Toolbar>
         </Container>
       </AppBar>
