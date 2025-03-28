@@ -1,10 +1,11 @@
-import { ArrowBack, Language } from '@mui/icons-material';
+import { ArrowBack, Language, Movie } from '@mui/icons-material';
 import {
   Box,
   Button,
   ButtonGroup,
   CircularProgress,
   Grid,
+  Stack,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -16,13 +17,14 @@ import {
   useGetStaffQuery,
 } from '../../../services/kinopoiskApi';
 import ErrorMessage from '../../ui/ErrorMessage';
+import MovieCard from '../../ui/MovieCard/MovieCard';
 
 export default function MovieDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const responseFilm = useGetFilmQuery(id);
-  const responseSequelsAndPrequel = useGetSequelsAndPrequelsQuery(id);
+  const responseSequelsAndPrequels = useGetSequelsAndPrequelsQuery(id);
   const responseStaff = useGetStaffQuery(id);
 
   if (responseFilm.isLoading || responseStaff.isLoading) {
@@ -39,15 +41,15 @@ export default function MovieDetail() {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
+      <Grid container spacing={2} sx={{ mt: { md: 2 } }}>
+        <Grid item md={4} sm={12}>
           <img
             src={responseFilm.data.posterUrl}
             alt={responseFilm.data.nameRu}
             width="100%"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item md={6} sm={12}>
           <Grid container>
             <Grid xs={2}>
               <Button
@@ -127,7 +129,7 @@ export default function MovieDetail() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item md={2} sm={12}>
           <Typography variant="h6">В главных ролях</Typography>
           {responseStaff.data
             .filter(el => el.professionText === 'Актеры')
@@ -140,7 +142,14 @@ export default function MovieDetail() {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
         <Grid item xs={12}>
           <ButtonGroup variant="outlined" size="small">
             <Button
@@ -150,10 +159,36 @@ export default function MovieDetail() {
             >
               Кинопоиск
             </Button>
-            <Button>IMDB</Button>
+            <Button
+              target="_blank"
+              href={`https://www.imdb.com/title/${responseFilm.data.imdbId}`}
+              endIcon={<Movie />}
+            >
+              IMDB
+            </Button>
           </ButtonGroup>
         </Grid>
+
+        <Grid item xs={12}></Grid>
+        <Typography variant="h5">Смотреть онлайн</Typography>
+        <video />
       </Grid>
+
+      <Stack alignItems="center">
+        <Typography gutterBottom variant="h5">
+          Сиквелы и приквелы
+        </Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          justifyContent="center"
+          sx={{ gap: 2 }}
+        >
+          {responseSequelsAndPrequels.data.map(el => (
+            <MovieCard key={el.filmId} movie={el} />
+          ))}
+        </Stack>
+      </Stack>
     </>
   );
 }
