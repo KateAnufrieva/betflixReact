@@ -1,6 +1,7 @@
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { setSearchQuery } from '../../../features/searchQuerySlice';
 import { useGetFilmsQuery } from '../../../services/kinopoiskApi';
@@ -15,6 +16,7 @@ const movieTypes = {
 export default function Search() {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { countries, genreId, order, type, year, page, keyword } = useSelector(
     state => state.searchQuerySlice,
   );
